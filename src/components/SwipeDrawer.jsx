@@ -2,8 +2,11 @@ import * as React from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
-//components
+// components
 import HeaderBar from './HeaderBar';
 import NavList from './NavList';
 
@@ -34,7 +37,6 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     ...theme.mixins.toolbar,
 }));
 
-
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
     ({ theme, open }) => ({
         width: drawerWidth,
@@ -52,26 +54,37 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
     }),
 );
 
-function SwipeDrawer() {
+const SwipeDrawer = () => {
     const theme = useTheme();
-    const [open, setOpen] = React.useState(true);
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+    const [open, setOpen] = React.useState(!isMobile);
 
-    const handleDrawer = () => {
-        setOpen(prevState => !prevState);
+    const handleDrawerToggle = () => {
+        setOpen((prevState) => !prevState);
     };
 
     return (
         <Box sx={{ display: 'flex' }}>
             <HeaderBar
-                open={open}
-                handleDrawer={handleDrawer}
+                handleDrawerToggle={handleDrawerToggle} // Pass the function here
             />
-            <Drawer variant="permanent" open={open}>
-                <DrawerHeader></DrawerHeader>
+            <Drawer
+                variant={isMobile ? 'temporary' : 'permanent'}
+                open={open}
+                onClose={handleDrawerToggle}
+                ModalProps={{ keepMounted: true }} // Better open performance on mobile.
+            >
+                <DrawerHeader>
+                    {isMobile && (
+                        <IconButton onClick={handleDrawerToggle}>
+                            <MenuIcon />
+                        </IconButton>
+                    )}
+                </DrawerHeader>
                 <NavList />
             </Drawer>
         </Box>
     );
-}
+};
 
 export default SwipeDrawer;

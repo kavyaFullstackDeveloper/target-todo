@@ -1,24 +1,43 @@
-
-
 import { LightbulbOutlined as Lightbulb } from '@mui/icons-material';
 import { Typography, Box, styled } from '@mui/material';
 
-const Light = styled(Lightbulb)`
-    font-size: 120px;
-    color: #F5F5F5;
-`
+// Responsive Lightbulb icon style
+const Light = styled(Lightbulb)(({ theme }) => ({
+    fontSize: '80px', // Default size for smaller screens
+    color: '#F5F5F5',
+    [theme.breakpoints.up('sm')]: {
+        fontSize: '100px', // Medium screens
+    },
+    [theme.breakpoints.up('md')]: {
+        fontSize: '120px', // Large screens
+    },
+}));
 
-const Text = styled(Typography)`
-    color: #80868b;
-    font-size: 22px
-`
+// Responsive text style
+const Text = styled(Typography)(({ theme }) => ({
+    color: '#80868b',
+    fontSize: '16px', // Default size for smaller screens
+    [theme.breakpoints.up('sm')]: {
+        fontSize: '18px', // Medium screens
+    },
+    [theme.breakpoints.up('md')]: {
+        fontSize: '22px', // Large screens
+    },
+}));
 
-const Container = styled(Box)`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20vh
-`
+// Responsive container style
+const Container = styled(Box)(({ theme }) => ({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginTop: '15vh', // Default margin for smaller screens
+    [theme.breakpoints.up('sm')]: {
+        marginTop: '20vh', // Medium screens
+    },
+    [theme.breakpoints.up('md')]: {
+        marginTop: '25vh', // Large screens
+    },
+}));
 
 const EmptyNotes = () => {
     return (
@@ -26,7 +45,7 @@ const EmptyNotes = () => {
             <Light />
             <Text>Notes you add appear here</Text>
         </Container>
-    )
-}
+    );
+};
 
 export default EmptyNotes;
